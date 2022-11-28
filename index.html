@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="cs">
+    <head>
+        <title>RSA kalkulačka</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--<link href="css/style.css" rel="stylesheet">-->
+        <script src="rsa.js"></script>
+    </head>
+    <body>
+        <h1>Ukázka funkčnosti RSA</h1>
+        <div>
+            <h2>Níže zadejte dvě prvočísla (P,Q)</h2>
+            <label for="p">Prvočíslo "P": </label>
+            <input type="text" name="prvocisloP" id="p" placeholder="Zde zadejte prvočíslo P">
+        </div>
+        <div>
+            <label for="q">Prvočíslo "Q": </label>
+            <input type="text" name="prvocisloQ" id="q" placeholder="Zde zadejte prvočíslo Q">
+        </div>
+        <div>
+            <br>
+            <input type="button" value="Vypočítej klíče" onclick="calculate()">
+        </div>
+
+        <table class="pure-table pure-table-bordered">
+            <thead>
+                <tr>
+                    <th>Konstanty</th>
+                    <th>Vypočtená hodnota</th>
+                    <th>Název</th>
+                    <th>Vzorec</th>
+                    <th>Popis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>N</td>
+                    <td><input type="text" id="n" class="input-in-col" readonly /></td>
+                    <td>Modul</td>
+                    <td>N: P * Q</td>
+                    <td class="help">Součin 2 prvočísel</td>
+                </tr>
+                <tr>
+                    <td>L</td>
+                    <td><input type="text" id="l" class="input-in-col" readonly /></td>
+                    <td>Délka</td>
+                    <td>L: (P - 1) * (Q - 1)</td>
+                    <td class="help">Výpočet hodnoty - "Eulerovy funkce <span>&#966;(n)</span>" </td>
+                </tr>
+                <tr>
+                    <td>E</td>
+                    <td><input type="text" id="e" class="input-in-col" onchange="encryptorChanged()" /></td>
+                    <td>Šifrovací klíč</td>
+                    <td></td>
+                    <td class="help">Nalezené číslo mezi 1 a L, které je společné s L a N<span id="enKeyListSpan"></span></td>
+                </tr>
+                <tr>
+                    <td>D</td>
+                    <td><input type="text" id="d" class="input-in-col" onchange="decryptorChanged()" /></td>
+                    <td>Dešifrovací klíč</td>
+                    <td>D * E mod L = 1</td>
+                    <td class="help">Zbytek součinu D a E při dělení L by měl být 1 (D * E % L = 1)<span id="deKeyListSpan"></span></td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
