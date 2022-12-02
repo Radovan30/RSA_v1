@@ -5,10 +5,59 @@ let n, l, e, d;
 // inicializa pro pole cisel
 let hashtable = new Object();
 
+
+//let randomBtn = document.getElementById( "random" );
+
+function getBits() {
+    let bits = document.getElementById( "bite" ).value;
+    let squareBit = Math.ceil( Math.sqrt( bits ) );
+    return squareBit;
+}
+
+
+function randomBtnClick() {
+    let num = getBits();
+    let p = generate( num );
+    let q = generate( num );
+
+    while ( !isPrime( p ) ) {
+        p = generate( num );
+    }
+    while ( !isPrime( q ) ) {
+        q = generate( num );
+    }
+
+    document.getElementById( "random-p" ).innerHTML = p;
+    document.getElementById( "random-q" ).innerHTML = q;
+
+    calculateBinary( p, q );
+}
+
+function generate( num ) {
+    let genP;
+    let temP = '0b';
+    for ( let i = 0; i < num; i++ ) {
+        temP += Math.round( Math.random() );
+        genP = parseInt( BigInt( temP ) );
+    }
+    return genP;
+}
+
+function random( num ) {
+    let gen = generate( num );
+
+    while ( !isPrime( gen ) ) {
+        gen = generate( num );
+    }
+    //console.log( "prime", gen );
+    return num;
+}
+
+
 // funkce pro validaci prvocisla
 function validatePrime( prime, nameOfPrime ) {
     if ( !isPrime( prime ) ) {
-        alert( "'" + nameOfPrime + "' Zadané číslo není prvočíslo. Zadejte prosím prvočíslo.");
+        alert( "'" + nameOfPrime + "' Zadané číslo není prvočíslo. Zadejte prosím prvočíslo." );
         return false;
     }
     if ( prime <= 7 ) {
@@ -22,11 +71,11 @@ function validatePrime( prime, nameOfPrime ) {
 // funkce pro desifrovaci klic - vypocet D
 function findDecryptionKeys( e, l ) {
     let ds = [];
-    for ( let x = l; x < l + 100000; x++ ) {
+    for ( let x = l; x < l + 10000000; x++ ) {
         if ( x * e % l === 1 ) {
             ds.push( x );
             if ( ds.length > 5 )
-            return ds;
+                return ds;
         }
     }
     return ds;
@@ -47,11 +96,32 @@ function calculate() {
     // delka - vypocet eulerovy funkce
     l = ( p - 1 ) * ( q - 1 );
     document.getElementById( "l" ).value = l;
-    
+
     // vypocet pro mozne klice
     let es = findEncryptionKeys( l, n );
     document.getElementById( "e" ).value = es[ 0 ];
     document.getElementById( "enKeyListSpan" ).innerHTML = "Možné šifrovací klíče jsou: " + es;
+    encryptorChanged();
+}
+
+
+// funkce pro vypocet binary a dosazeni promennych n, l, e, d
+function calculateBinary( p, q ) {
+    // validace p a q
+    if ( !( validatePrime( p, "p" ) && validatePrime( q, "q" ) ) )
+        return;
+    // soucin 2 provisel 
+    n = p * q;
+    document.getElementById( "n" ).value = n;
+
+    // delka - vypocet eulerovy funkce
+    l = ( p - 1 ) * ( q - 1 );
+    document.getElementById( "l" ).value = l;
+
+    // vypocet pro mozne klice
+    let es = findEncryptionKeys( l, n );
+  
+    document.getElementById( "e" ).value = es[ 0 ];
     encryptorChanged();
 }
 
@@ -77,13 +147,13 @@ function decryptorChanged() {
 }
 
 
-// funkce zjistuje jestli je zadane cislo prvocislo
 function isPrime( num ) {
     if ( isNaN( num ) || !isFinite( num ) || num % 1 || num < 2 ) return false;
     if ( num % 2 == 0 ) return ( num == 2 );
     let m = Math.sqrt( num );
     for ( let i = 3; i <= m; i += 2 ) {
-        if ( num % i == 0 ) return false;
+        if ( num % i == 0 )
+            return false;
     }
     return num !== 1;
 }
@@ -110,33 +180,41 @@ function isCoPrime( a, b ) {
     return result;
 }
 
+
 function findFactors( num ) {
     if ( hashtable[ num ] )
         return hashtable[ num ];
 
     // zajisteni celeho cisla <= num.
-    let half = Math.floor( num / 2 ), 
-    result = [],
-    i, j;
-    console.log( "čislo:", half );
+    let half = Math.floor( num / 2 ),
+        result = [],
+        i, j;
+    console.log( "half", half );
+    console.log( "i " , i );
+    console.log( "j ", j );
 
-    // 1 by mel byt soucasti kazdeho reseni, ale pro nas ucel COPRIME 1 by mel byt vyloucen
-    //result.push(1);
-    
-
-    // Urceni hodnoty prirustku pro smycku a pocatecni bod
-    num % 2 === 0 ? ( i = 2, j = 1 ) : ( i = 3, j = 2 );
-
-    for ( i; i <= half; i += j ) {
+        
+        // 1 by mel byt soucasti kazdeho reseni, ale pro nas ucel COPRIME 1 by mel byt vyloucen
+        // result.push(1);
+        
+        
+        // Urceni hodnoty prirustku pro smycku a pocatecni bod
+        num % 2 === 0 ? ( i = 2, j = 1 ) : ( i = 3, j = 2 );
+        
+        for ( i; i <= half; i += j ) {
         num % i === 0 ? result.push( i ) : false;
+
     }
 
     // uvedeni puvodniho cisla
-    result.push( num ); 
-
+    result.push( num );
+    console.log( "result ", result.push( num ) );
     hashtable[ num ] = result;
+    console.log( "hashtable ", hashtable );
     return result;
 }
+
+
 
 
 // funkce pro zasifrovani zpravy
@@ -150,14 +228,14 @@ function encrypt() {
 
     let encrypted = ascii.map( i => powerMod( i, e, n ) );
     document.getElementById( "encrypted-msg" ).innerHTML = encrypted;
-    document.getElementById( "encrypted-msg-textbox").value = encrypted;
+    document.getElementById( "encrypted-msg-textbox" ).value = encrypted;
 }
 
 
 // funkce pro rozsifrovani zpravy  
 function decrypt() {
     let cipher = stringToNumberArray( document.getElementById( "encrypted-msg-textbox" ).value );
-    
+
     console.log( cipher );
 
     let ascii = cipher.map( i => powerMod( i, d, n ) );
@@ -165,7 +243,7 @@ function decrypt() {
 
     let message = "";
     ascii.map( x => message += String.fromCharCode( x ) );
-    document.getElementById( "decrypted-msg").innerHTML = message;
+    document.getElementById( "decrypted-msg" ).innerHTML = message;
 }
 
 
