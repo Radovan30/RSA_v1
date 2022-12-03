@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="cs">
+    <head>
+        <title>RSA</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--<link href="css/style.css" rel="stylesheet">-->
+    </head>
+    <body>
+        <script src="rsa.js"></script>
+        <h1>Ukázka funkčnosti RSA</h1>
+
+        <!-- Zadaní 2 prvocisel P a Q -->
+        <section>
+            <div>
+                <h2>Níže zadejte dvě prvočísla (P,Q)</h2>
+                <label for="p">Prvočíslo "P": </label>
+                <input type="text" name="prvocisloP" id="p" placeholder="Zde zadejte prvočíslo P">
+            </div>
+            <div>
+                <label for="q">Prvočíslo "Q": </label>
+                <input type="text" name="prvocisloQ" id="q" placeholder="Zde zadejte prvočíslo Q">
+            </div>
+            <div><span class="help">Příklady prvočísel: 11, 13, 17, 19, 23, 29, 191, 193, 197, 199, atd. </span><br>
+            <div><span class="help">Příklady prvočísel coprime: 29, 31, atd. </span><br>
+            </div>
+            <div>
+                <br>
+                <input type="button" value="VÝPOČET KLÍČE" onclick="calculate()">
+            </div>
+        </section>
+
+        <section class="">
+            <div>
+                <h2>Generování klíře za pomoci bitu</h2>
+               
+                    <select id="bite" name="value-bite" onchange="getBits()">
+                        <option value="32">32</option>
+                        <option value="64" selected>64</option>
+                        <option value="128">128</option>
+                        <option value="192">192</option>
+                    </select>
+             
+                    <input type="button" id="random" value="GENEROVAT KLÍČ" onclick="randomBtnClick()">
+            </div>
+            <div>
+                <p>Vygenerované prvočíslo P: <span id="random-p"></span></p>
+                <p>Vygenerované prvočíslo Q: <span id="random-q"></span></p>
+            </div>
+        </section>
+
+        <!-- Tabulka vypocitanych hodnot N, L, E, N a jejich popis  -->
+        <table class="pure-table pure-table-bordered">
+            <thead>
+                <tr>
+                    <th>Konstanty</th>
+                    <th>Vypočtená hodnota</th>
+                    <th>Název</th>
+                    <th>Vzorec</th>
+                    <th>Popis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>N</td>
+                    <td><input type="text" id="n" class="input-in-col" readonly /></td>
+                    <td>Modul</td>
+                    <td>N: P * Q</td>
+                    <td class="help">Součin 2 prvočísel</td>
+                </tr>
+                <tr>
+                    <td>L</td>
+                    <td><input type="text" id="l" class="input-in-col" readonly /></td>
+                    <td>Délka</td>
+                    <td>L: (P - 1) * (Q - 1)</td>
+                    <td class="help">Výpočet hodnoty - "Eulerovy funkce <span>&#966;(n)</span>" </td>
+                </tr>
+                <tr>
+                    <td>E</td>
+                    <td><input type="text" id="e" class="input-in-col" onchange="encryptorChanged()" /></td>
+                    <td>Šifrovací klíč</td>
+                    <td></td>
+                    <td class="help">Nalezené číslo mezi 1 a L, které je společné s L a N <br>
+                        <span id="enKeyListSpan"></span></td>
+                </tr>
+                <tr>
+                    <td>D</td>
+                    <td><input type="text" id="d" class="input-in-col" onchange="decryptorChanged()" /></td>
+                    <td>Dešifrovací klíč</td>
+                    <td>D * E mod L = 1</td>
+                    <td class="help">Zbytek součinu D a E při dělení L by měl být 1 (D * E % L = 1) <br>
+                        <span id="deKeyListSpan"></span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Vypis verejneho a soukromeho klice -->
+        <section>
+            <div class="key">
+                <span class="key-label">Veřejný klíč se skládá z (D a N) : </span><span id="public-key" class="key-value"></span>
+            </div>
+            <div class="key">
+                <span class="key-label">Privatní klíč se skládá z (E a N) : </span><span id="private-key" class="key-value"></span>
+            </div>
+        </section>
+
+
+        <article>
+            <h1>Níže napište svoji zprávu</h1>
+            <input type="text" id="message" placeholder="Zde napište zprávu"/></p>
+            <p><input type="button" value="ŠIFROVAT" onclick="encrypt()" /></p>
+            <hr />
+            <p>Zpráva převedena na ASCII kód: <span id="ascii"></span></p>
+            <p>Šifrovaná zpráva:  "zpráva^E % N "</p>
+            <section>
+                <div class="key">
+                    <span class="key-label">Zašifrovaná zpráva v ASCII: </span><span id="encrypted-msg" class="key-value"></span>
+                </div>
+            </section>
+        </article>
+        <article>
+            <h1>Dešifrování zprávy</h1>
+            <p>Vložená zašifrovaná zpráva: <input type="text" id="encrypted-msg-textbox" /></p>
+            <p><input type="button" value="DEŠIFROVAT" onclick="decrypt()" /></p>
+            <hr />
+            <p>Dešifrovaná zpráva v ASCII: <span id="ascii-decrypted"></span></p>
+            <p>Dešifrovaná zpráva:: šifrovaná " zpráva^D % N "</p>
+            <section>
+                <div class="key">
+                    <span class="key-label">Dešifrivaná zpráva: </span><span id="decrypted-msg" class="key-value"></span>
+                </div>
+            </section>
+        </article>
+
+    </body>
+</html>

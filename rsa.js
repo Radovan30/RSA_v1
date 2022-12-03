@@ -5,6 +5,36 @@ let n, l, e, d;
 // inicializa pro pole cisel
 let hashtable = new Object();
 
+let valPrime = document.querySelector( "#val-prime" );
+let ranPrime = document.querySelector( "#ran-prime" );
+let valActive = document.querySelector( "#nav1" );
+let ranActive = document.querySelector( "#nav2" );
+
+
+// Vizuální úprava nadpisu podle čísla úkolu.
+function updateTitle( id ) {
+    
+    switch ( id ) {
+        case 1:
+            document.getElementById( "page-header" ).innerHTML = "Níže zadejte dvě prvočísla (P,Q)";
+            ranPrime.classList.add( 'none' );
+            valPrime.classList.remove( 'none' );
+            valActive.classList.add( "active" );
+            ranActive.classList.remove( "active" );
+            break;
+        case 2:
+            document.getElementById( "page-header", "h1" ).innerHTML = "Generování klíře N v bitu";
+            ranPrime.classList.remove( 'none' );
+            valPrime.classList.add( 'none' );
+            valActive.classList.remove( "active" );
+            ranActive.classList.add( "active" );
+
+            break;
+    }
+}
+
+console.log( "id ", updateTitle() );
+
 
 //let randomBtn = document.getElementById( "random" );
 
@@ -33,23 +63,32 @@ function randomBtnClick() {
     calculateBinary( p, q );
 }
 
+
 function generate( num ) {
-    let genP;
-    let temP = '0b';
+    let value;
+    let temp = '0b';
     for ( let i = 0; i < num; i++ ) {
-        temP += Math.round( Math.random() );
-        genP = parseInt( BigInt( temP ) );
+        temp += Math.round( Math.random() );
+        value = parseInt( BigInt( temp ) );
     }
-    return genP;
+    if ( value > 7 ) {
+        return value;
+    }
+    else
+        for ( let i = 0; i < num; i++ ) {
+            temp += Math.round( Math.random() );
+            value = parseInt( BigInt( temp ) );
+        }
 }
 
-function random( num ) {
-    let gen = generate( num );
 
-    while ( !isPrime( gen ) ) {
-        gen = generate( num );
+function random( num ) {
+    let value = generate( num );
+
+    while ( !isPrime( value ) ) {
+        value = generate( num );
     }
-    //console.log( "prime", gen );
+    //console.log( "prime", value );
     return num;
 }
 
@@ -82,6 +121,7 @@ function findDecryptionKeys( e, l ) {
 }
 
 
+
 // funkce pro vypocet a dosazeni promennych n, l, e, d
 function calculate() {
     let p = document.getElementById( "p" ).value;
@@ -99,6 +139,7 @@ function calculate() {
 
     // vypocet pro mozne klice
     let es = findEncryptionKeys( l, n );
+
     document.getElementById( "e" ).value = es[ 0 ];
     document.getElementById( "enKeyListSpan" ).innerHTML = "Možné šifrovací klíče jsou: " + es;
     encryptorChanged();
@@ -120,8 +161,9 @@ function calculateBinary( p, q ) {
 
     // vypocet pro mozne klice
     let es = findEncryptionKeys( l, n );
-  
+
     document.getElementById( "e" ).value = es[ 0 ];
+    document.getElementById( "enKeyListSpan" ).innerHTML = "Možné šifrovací klíče jsou: " + es;
     encryptorChanged();
 }
 
@@ -133,12 +175,16 @@ function encryptorChanged() {
     let ds = findDecryptionKeys( e, l );
     ds.splice( ds.indexOf( e ), 1 );
     d = ds[ 0 ];
+    if ( d === undefined ) {
+        randomBtnClick();
+    }
     document.getElementById( "d" ).value = d;
     document.getElementById( "deKeyListSpan" ).innerHTML = "Možné dešifrovací klíče jsou: " + ds;
 
     document.getElementById( "private-key" ).innerHTML = "E = " + e + " , N = " + n;
     document.getElementById( "public-key" ).innerHTML = "D = " + d + " , N = " + n;
 }
+
 
 // funkce pro vyber hodnoty z textoveho pole D a jeho vypis 
 function decryptorChanged() {
@@ -147,6 +193,7 @@ function decryptorChanged() {
 }
 
 
+// funkce pro kontrolu prvocisla
 function isPrime( num ) {
     if ( isNaN( num ) || !isFinite( num ) || num % 1 || num < 2 ) return false;
     if ( num % 2 == 0 ) return ( num == 2 );
@@ -181,6 +228,7 @@ function isCoPrime( a, b ) {
 }
 
 
+// vypocet faktoru 
 function findFactors( num ) {
     if ( hashtable[ num ] )
         return hashtable[ num ];
@@ -189,21 +237,18 @@ function findFactors( num ) {
     let half = Math.floor( num / 2 ),
         result = [],
         i, j;
-    console.log( "half", half );
-    console.log( "i " , i );
-    console.log( "j ", j );
+    //console.log( "half", half );
+    //console.log( "i ", i );
+    //console.log( "j ", j );
 
-        
-        // 1 by mel byt soucasti kazdeho reseni, ale pro nas ucel COPRIME 1 by mel byt vyloucen
-        // result.push(1);
-        
-        
-        // Urceni hodnoty prirustku pro smycku a pocatecni bod
-        num % 2 === 0 ? ( i = 2, j = 1 ) : ( i = 3, j = 2 );
-        
-        for ( i; i <= half; i += j ) {
+    // 1 by mel byt soucasti kazdeho reseni, ale pro nas ucel COPRIME 1 by mel byt vyloucen
+    //result.push(1);
+
+    // Urceni hodnoty prirustku pro smycku a pocatecni bod
+    num % 2 === 0 ? ( i = 2, j = 1 ) : ( i = 3, j = 2 );
+
+    for ( i; i <= half; i += j ) {
         num % i === 0 ? result.push( i ) : false;
-
     }
 
     // uvedeni puvodniho cisla
@@ -213,8 +258,6 @@ function findFactors( num ) {
     console.log( "hashtable ", hashtable );
     return result;
 }
-
-
 
 
 // funkce pro zasifrovani zpravy
@@ -247,25 +290,23 @@ function decrypt() {
 }
 
 
-
 // funkce pro parsovani integer
-
 function stringToNumberArray( str ) {
     return str.split( "," ).map( i => parseInt( i ) );
 }
 
 /*
-function encode_utf8( s ) {
+function encode_utf8( str ) {
     return unescape( encodeURIComponent( s ) );
 }
 
-function decode_utf8( s ) {
+function decode_utf8( str ) {
     return decodeURIComponent( escape( s ) );
 }
 */
 
 
-// modularni umocneni (a^p % n), udrzuje cisla v datovem rozsahu integer 
+// modularni umocneni (a^p % n), udrzuje cisla v datovem rozsahu integer desivrovani
 function powerMod( base, exponent, modulus ) {
     if ( modulus === 1 ) return 0;
     var result = 1;

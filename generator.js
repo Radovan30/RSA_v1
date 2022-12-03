@@ -1,7 +1,7 @@
 
 
 let p, q;
-let bite = 64;
+let bite = 16;
 let squareBit = Math.ceil( Math.sqrt( bite ) );
 console.log( "bite = " + bite )
 console.log( "Odmocneno = " + squareBit )
@@ -13,8 +13,30 @@ function generate( bit ) {
         temP += Math.round( Math.random() );
         genP = parseInt( BigInt( temP ) );
     }
+    while ( genP <= 7 ) {
+        for ( let i = 0; i < bit; i++ ) {
+            temP += Math.round( Math.random() );
+            genP = parseInt( BigInt( temP ) );
+        }
+    } 
     return genP;
 }
+
+// funkce zjistuje jestli je zadane cislo prvocislo
+function isPrime( num ) {
+    if ( isNaN( num ) || !isFinite( num ) || num % 1 || num < 2 ) return false;
+    if ( num % 2 == 0 ) return ( num == 2 );
+    let m = Math.sqrt( num );
+    for ( let i = 3; i <= m; i += 2 ) {
+        if ( num % i == 0 )
+            return false;
+    }
+    console.log( "is prime", num );
+    return num !== 1;
+}
+
+console.log( generate( squareBit ) );
+//console.log( isPrime( 6187634 ) );
 
 //let n = parseInt( generate( squareBit ) )
 //console.log( "N: ", n );
@@ -80,29 +102,18 @@ function generateP(  ) {
 
 
 
-// funkce zjistuje jestli je zadane cislo prvocislo
-function isPrime( num ) {
-  if ( isNaN( num ) || !isFinite( num ) || num % 1 || num < 2 ) return false;
-  if ( num % 2 == 0 ) return ( num == 2 );
-  let m = Math.sqrt( num );
-  for ( let i = 3; i <= m; i += 2 ) {
-      if ( num % i == 0 )
-      return false;
-  }
-  console.log( "is prime" ,num );
-  return num !== 1;
-}
 
-console.log( isPrime( 6187634 ) );
 
- /*
+
+
+/*
 if ( isPrime == false ) {
-  generateP();
+ generateP();
 } else
-  
-  
+ 
+ 
 
-  p = BigInt( temP );
+ p = BigInt( temP );
 pParseInt = parseInt( p );
 console.log( "P = ", pParseInt );
 
@@ -113,13 +124,13 @@ console.log( "P = ", pParseInt );
 
 
 function generateP() {
-  let a;
-  let temP = '0b';
-  for ( let i = 0; i < squareBit; i++ ) {
-      temP += Math.round( Math.random() );
-      a = BigInt( temP );
-  }
-  return a;
+ let a;
+ let temP = '0b';
+ for ( let i = 0; i < squareBit; i++ ) {
+     temP += Math.round( Math.random() );
+     a = BigInt( temP );
+ }
+ return a;
 
 }
 

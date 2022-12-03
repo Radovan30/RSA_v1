@@ -1,0 +1,366 @@
+/*---------- STYLIZACE WEBOVE STRÁNKY ------------*/
+
+@import url("https://fonts.googleapis.com/css2?family=Gemunu+Libre:wght@200;300;400;500;600;700&display=swap");
+
+html {
+  font-family: "Gemunu Libre", sans-serif;
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+  letter-spacing: 0.5px;
+  background-color: #f3f3f3;
+}
+
+body {
+  color: rgba(0, 111, 132);
+  margin: 0;
+}
+
+/* NASTAVENI HLAVICKY A NAVIGACE*/
+header {
+  width: 90%;
+  height: 205px;
+  margin: 0 auto;
+  margin-left: 5%;
+  justify-content: center;
+}
+
+header h1 {
+  text-align: center;
+  margin-bottom: -20px;
+}
+
+.user h2 {
+  text-align: right;
+  color: #000;
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+}
+
+.nav-menu {
+  display: flex;
+  padding: 0px;
+}
+
+.nav-menu li {
+  list-style: none;
+  margin-left: 20px;
+}
+
+.nav-menu a {
+  font-size: 1.5rem;
+}
+
+.nav-link {
+  transition: 0.7 ease;
+  text-decoration: none;
+  color: rgb(0, 111, 132);
+}
+
+.nav-link:hover::after {
+  color: rgba(255, 96, 123, 0.9);
+  left: 0%;
+  width: 100%;
+}
+
+.nav-link.active {
+  color: rgb(255, 96, 123);
+  font-weight: bold;
+}
+
+.nav-link::after {
+  content: " ";
+  width: 0%;
+  height: 3px;
+  opacity: 0.5;
+  background: -webkit-linear-gradient(
+    to left,
+    rgb(0, 111, 132),
+    rgb(255, 96, 123)
+  );
+  background: linear-gradient(to left, rgb(0, 111, 132), rgb(255, 96, 123));
+  display: block;
+  bottom: 0%;
+  left: 100%;
+  border-radius: 30%;
+  transition: all 500ms ease;
+}
+
+
+.none {
+  display: none;
+}
+
+main {
+  display: block;
+}
+
+h1,
+h2,
+h3 {
+  text-shadow: 1px 1px 2px #808080;
+  margin: 0.67em 0;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.3em;
+}
+
+h2 {
+  color: #000000d2;
+  font-size: 2em;
+}
+
+h3 {
+  text-align: center;
+  font-size: 2em;
+}
+
+h4 {
+  font-size: 1.2em;
+}
+
+/* STYLYZACE VSTUPNICH A VYSTUPNICH KOMPONENTU */
+button,
+input,
+optgroup,
+select {
+  font-family: inherit;
+  font-size: 1.2em;
+  line-height: 1.15;
+  margin: 0;
+}
+
+textarea,
+.inputText,
+.inputPass,
+.result {
+  margin: 0 auto;
+  display: flex;
+  margin-top: 20px;
+  border: 1px solid #000000d2;
+  box-shadow: 3px 3px 10px #0000005a;
+  border-radius: 3px;
+  padding: 5px;
+  font-size: 1.2em;
+  font-family: "Gemunu Libre", sans-serif;
+  letter-spacing: 1px;
+  max-width: 100%;
+}
+
+.tlacitko {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.form-radio {
+  display: inline-block;
+  margin: 0 0.625rem 0 0.625rem;
+}
+
+
+
+select{
+  width: 5rem;
+  height: 2.65rem;
+}
+
+p{
+ font-size: 1.2rem;
+}
+
+.key {
+  margin-bottom: 3rem;
+}
+
+.key-value {
+  color: red;
+  font-size: 1.5rem;
+}
+
+#random-p,
+#random-q,
+#ascii,
+#enKeyListSpan,
+#deKeyListSpan,
+#ascii-decrypted,
+.help {
+  color: red;
+  font-size: 1.2rem;
+}
+
+button{
+  width: 200px;
+  height: auto;
+  padding: 10px;
+  background-color: rgb(0, 111, 132);
+  color: #fff;
+  text-shadow: 1px 1px 2px #2d2d2d;
+  border-radius: 3px;
+  border: none;
+  opacity: 0.9;
+  font-size: 1.2em;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.31s ease-in-out;
+}
+
+button:hover {
+  background-color: rgb(255, 96, 123);
+}
+
+.btn {
+  margin-left: 2em;
+}
+
+.preview-string {
+  display: flex;
+  margin: 0 auto;
+  padding: 6px;
+  color: #000000d2;
+  background-color: #f3f3f3;
+  word-break: break-word;
+  width: 90%;
+  border-radius: 3px;
+  font-size: 1.2em;
+  box-shadow: 1px 1px 8px #f3f3f3;
+}
+
+/* NASTAVENÍ HLAVNIHO TELA */
+.container {
+  width: 90%;
+  margin: 0 auto;
+  word-break: break-word;
+  text-align: justify;
+  padding: 7px;
+  background-color: rgb(230, 228, 228);
+  box-shadow: 2px 2px 8px #8d8d8d, -2px -2px 8px #8d8d8d;
+  border-radius: 3px;
+  font-size: 1.2em;
+}
+
+.two .container {
+  background-color: #00000047;
+}
+
+.art {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  box-shadow: 6px -6px 10px #0000005a;
+  margin-top: 20px;
+}
+
+.art_2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  box-shadow: 6px -6px 10px #0000005a;
+  margin-top: 20px;
+}
+
+.one {
+  width: 90%;
+  text-align: center;
+  margin: 0 auto;
+  
+}
+
+.one {
+  background-color: #f3f3f3;
+  color: #000000d2;
+}
+
+.two {
+  background-color: #000000d2;
+  color: #f3f3f3;
+}
+
+.two h2 {
+  color: #f3f3f3;
+}
+
+textarea {
+  font-family: courier new;
+  font-size: 12pt;
+}
+
+/* NASTAVENI PODCASTI */
+.desktop {
+  margin-top: 2rem;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+label {
+  font-size: 1.4em;
+  margin: 0.67em 0;
+  text-align: center;
+}
+
+select {
+  color: crimson;
+  padding: 0.2em;
+}
+
+
+table {
+  font-size: 1.3em;
+  display: inline-block;
+   text-align: left;
+}
+
+td {
+  padding: 0.5em;
+}
+
+th {
+  padding: 0.5em;
+  font-size: 1.2em;
+}
+
+.flex-row {
+  width: 25%;
+}
+
+.flex-row, .flex-cell {
+  text-align: center;
+}
+
+
+
+/* MEDIA QUERIES - UPRAVA STYLU PRO MOBILNÍ VERZE */
+@media only screen and (max-width: 950px) {
+  .art {
+    grid-template-columns: 1fr;
+    margin-top: 60px;
+    box-shadow: none;
+  }
+}
+
+@media only screen and (max-width: 760px) {
+  header {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media only screen and (max-width: 640px) {
+  
+  
+  header {
+    min-height: 200px;
+  }
+
+  h1 {
+    font-size: 1.8em;
+  }
+
+  h2 {
+    font-size: 1.2em;
+  }
+}
